@@ -40,7 +40,8 @@ dependencies {
 	implementation("software.amazon.awssdk:s3")
 	implementation("io.findify:s3mock_2.13:0.2.6")
 
-	implementation 'io.micrometer:micrometer-registry-prometheus'
+	implementation 'io.micrometer:micrometer-registry-prometheus:1.10.3'
+	implementation 'io.micrometer:micrometer-registry-statsd:1.10.3'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

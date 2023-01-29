@@ -3,6 +3,7 @@ package com.edobry.moculus.service;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
+import io.micrometer.statsd.StatsdConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,6 @@ public class StatusReporter {
         this.meterRegistry = meterRegistry;
 
         List<Tag> tags = List.of(Tag.of("simulated", "true"));
-
         this.meterRegistry.gauge("battery", tags, this, randomInRange(0., 100.));
         this.meterRegistry.gauge("cpu_temp", tags, this, randomInRange(40., 90.));
         this.meterRegistry.gauge("cpu_util", tags, this, randomInRange(0., 100.));
