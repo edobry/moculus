@@ -7,6 +7,17 @@ mock-backend:
   port: 8001
   path: moculus-bucket
 
+management:
+  security:
+    enabled: false
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: '*'
+        exclude: env,beans
+
+
 spring:
   datasource:
     url: jdbc:h2:file:./data/db

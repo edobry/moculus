@@ -17,11 +17,11 @@ public class S3StorageProvider implements ObjectStorageProvider {
 
     private S3ClientBuilder buildClient() {
         return S3Client.builder().region(Region.US_EAST_1)
-                .credentialsProvider(() ->
-                        AwsBasicCredentials.create("test", "test"))
-                .serviceConfiguration(
-                        S3Configuration.builder()
-                                .pathStyleAccessEnabled(true).build());
+            .credentialsProvider(() ->
+                AwsBasicCredentials.create("test", "test"))
+            .serviceConfiguration(
+                S3Configuration.builder()
+                        .pathStyleAccessEnabled(true).build());
     }
 
     public S3StorageProvider() {
@@ -46,7 +46,7 @@ public class S3StorageProvider implements ObjectStorageProvider {
 
         return getUrlForKey(name);
     }
-    
+
     private URL getUrlForKey(String name) {
         return this.client.utilities().getUrl(x -> x.bucket(BUCKET_NAME).key(name));
     }

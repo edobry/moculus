@@ -21,7 +21,7 @@ import java.util.UUID;
 public class SignupSimulator {
     private final ObjectStorageProvider s3Client;
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 10000)
     public void submitSignup() throws IOException {
         Signup signup = makeSignup();
 
