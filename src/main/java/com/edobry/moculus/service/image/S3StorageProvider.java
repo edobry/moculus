@@ -21,7 +21,7 @@ public class S3StorageProvider implements ObjectStorageProvider {
                 AwsBasicCredentials.create("test", "test"))
             .serviceConfiguration(
                 S3Configuration.builder()
-                        .pathStyleAccessEnabled(true).build());
+                    .pathStyleAccessEnabled(true).build());
     }
 
     public S3StorageProvider() {
@@ -30,7 +30,7 @@ public class S3StorageProvider implements ObjectStorageProvider {
 
     public S3StorageProvider(String endpoint) {
         this.client = buildClient().endpointOverride(
-                URI.create(endpoint)
+            URI.create(endpoint)
         ).build();
     }
 
@@ -41,8 +41,8 @@ public class S3StorageProvider implements ObjectStorageProvider {
         this.client.createBucket(x -> x.bucket(BUCKET_NAME));
 
         var response = this.client.putObject(
-                builder -> builder.bucket(BUCKET_NAME).key(name),
-                RequestBody.fromBytes(bytes));
+            builder -> builder.bucket(BUCKET_NAME).key(name),
+            RequestBody.fromBytes(bytes));
 
         return getUrlForKey(name);
     }

@@ -5,7 +5,9 @@ import io.findify.s3mock.S3Mock;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import scala.concurrent.duration.FiniteDuration;
+import scala.jdk.javaapi.CollectionConverters;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MockObjectStorageProvider extends S3StorageProvider {
@@ -27,7 +29,11 @@ public class MockObjectStorageProvider extends S3StorageProvider {
 
         S3Mock api = new S3Mock.Builder().withPort(props.port).withFileBackend(props.path).build();
         this.serverBinding = api.start();
-        this.clear();
+
+        // library provides scala list, needs conversion
+        CollectionConverters.asJava(api.p().listBuckets().buckets()).stream()
+            .filter(x -> !x.name().contains(".metadata"))
+            .forEach(bucket -> api.p().deleteBucket(bucket.name()));
     }
 
     public void shutdown() {
