@@ -1,13 +1,17 @@
 package com.edobry.moculus.domain;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.awt.image.BufferedImage;
+import java.net.URL;
 
 @Data
 @RequiredArgsConstructor
 public class Signup {
-    public final BufferedImage iris;
+    @NotNull
+    public final URL irisUrl;
+
+    @NotNull
     public final String id;
 }
