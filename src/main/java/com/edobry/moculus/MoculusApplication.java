@@ -1,5 +1,6 @@
 package com.edobry.moculus;
 
+import com.edobry.moculus.service.SignupSimulator;
 import com.edobry.moculus.service.image.MockObjectStorageProvider;
 import com.edobry.moculus.service.image.ObjectStorageProvider;
 import com.edobry.moculus.service.image.S3StorageProvider;
@@ -22,7 +23,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-@EnableConfigurationProperties({MockObjectStorageProvider.MockObjectStorageProviderProperties.class, StatsdProperties.class})
+@EnableConfigurationProperties({
+	MockObjectStorageProvider.MockObjectStorageProviderProperties.class,
+	SignupSimulator.SignupSimulatorProperties.class,
+	StatsdProperties.class
+})
 public class MoculusApplication {
 
 	public static void main(String[] args) {
