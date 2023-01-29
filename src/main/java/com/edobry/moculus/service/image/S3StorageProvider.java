@@ -55,7 +55,8 @@ public class S3StorageProvider implements ObjectStorageProvider {
     public void clear() {
         log.info("Clearing object storage...");
 
-        this.client.deleteBucket(builder ->
-                builder.bucket(BUCKET_NAME));
+        this.client.listBuckets().buckets().forEach(bucket ->
+            this.client.deleteBucket(builder ->
+                builder.bucket(bucket.name())));
     }
 }
