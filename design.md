@@ -34,6 +34,14 @@ We will use a Scheduler component to periodically run signup simulation jobs, wh
 
 I'm going to assume that we don't care about testing the instrumentation, as that's not typically considered necessary, and will instead focus on the signup simulation. We have several options here: a unit test validating only the contents of the crafted request, or an integration test involving a test API server receiving real network requests. For the sake of this project, I will take the unit test approach, to minimize complexity and focus on the actual business logic at play here.
 
+#### Test Cases
+
+- signups contain a URL
+- signup URLs point to a downloadable file
+- signup images are in a PNG format
+- signup images are unique
+- signups contain an ID
+- signup IDs are unique
 
 ### Deployment
 

@@ -50,7 +50,7 @@ public class SignupSimulator {
         log.info("received response: {}", response.body());
     }
 
-    private Signup generateSignup() throws IOException {
+    public Signup generateSignup() throws IOException {
         BufferedImage irisImage = this.makeIrisImage();
         String id = UUID.randomUUID().toString();
 
