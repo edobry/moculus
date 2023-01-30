@@ -26,6 +26,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableConfigurationProperties({
 	MockObjectStorageProvider.MockObjectStorageProviderProperties.class,
 	SignupSimulator.SignupSimulatorProperties.class,
+	S3StorageProvider.AwsProperties.class,
 	StatsdProperties.class
 })
 public class MoculusApplication {
@@ -35,10 +36,10 @@ public class MoculusApplication {
 	}
 
 	@Bean
-	public ObjectStorageProvider storageProvider(MockObjectStorageProvider.MockObjectStorageProviderProperties props) {
-		return props.enabled
-			? new MockObjectStorageProvider(props)
-			: new S3StorageProvider();
+	public ObjectStorageProvider storageProvider(MockObjectStorageProvider.MockObjectStorageProviderProperties mockProps, S3StorageProvider.AwsProperties awsProps) {
+		return mockProps.enabled
+			? new MockObjectStorageProvider(mockProps)
+			: new S3StorageProvider(awsProps);
 	}
 
 	@Bean

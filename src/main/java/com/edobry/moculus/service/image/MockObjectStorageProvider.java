@@ -13,9 +13,8 @@ import java.util.concurrent.TimeUnit;
 public class MockObjectStorageProvider extends S3StorageProvider {
     private final Http.ServerBinding serverBinding;
 
-//    @ConstructorBinding
-    @ConfigurationProperties("mock-backend")
     @Data
+    @ConfigurationProperties("mock-backend")
     public static class MockObjectStorageProviderProperties {
         public final Boolean enabled;
 

@@ -1,6 +1,8 @@
 package com.edobry.moculus.service.image;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
@@ -15,28 +17,39 @@ import java.net.URL;
 public class S3StorageProvider implements ObjectStorageProvider {
     private final S3Client client;
 
-    private S3ClientBuilder buildClient() {
+    @Data
+    @ConfigurationProperties("aws")
+    public static class AwsProperties {
+        public final String accessKeyId;
+
+        public final String secretAccessKey;
+    }
+
+
+    private S3ClientBuilder buildClient(AwsProperties properties) {
         return S3Client.builder().region(Region.US_EAST_1)
             .credentialsProvider(() ->
-                AwsBasicCredentials.create("test", "test"))
+                AwsBasicCredentials.create(properties.accessKeyId, properties.secretAccessKey))
             .serviceConfiguration(
                 S3Configuration.builder()
                     .pathStyleAccessEnabled(true).build());
     }
 
-    public S3StorageProvider() {
-        this.client = buildClient().build();
+    public S3StorageProvider(AwsProperties properties) {
+        this.client = buildClient(properties).build();
     }
 
     public S3StorageProvider(String endpoint) {
-        this.client = buildClient().endpointOverride(
+        this.client = buildClient(
+            // fake credentials for mock backend
+            new AwsProperties("test", "test")
+        ).endpointOverride(
             URI.create(endpoint)
         ).build();
     }
 
     private static final String BUCKET_NAME = "iris";
 
-//    @Override
     public URL add(String name, byte[] bytes) {
         this.client.createBucket(x -> x.bucket(BUCKET_NAME));
 

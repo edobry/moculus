@@ -6,6 +6,10 @@ mock-backend:
   port: 8001
   path: moculus-bucket
 
+aws:
+  accessKeyId:
+  secretAccessKey:
+
 management:
   port: 8081
   security:
