@@ -1,5 +1,11 @@
 server:
+  enabled: false
   port: 8080
+
+# uncomment to disable embedded API server
+#spring:
+#  main:
+#    web-application-type: none
 
 mock-backend:
   enabled: true
