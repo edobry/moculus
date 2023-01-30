@@ -4,14 +4,11 @@ import com.amazonaws.util.StringUtils;
 import com.amazonaws.util.json.Jackson;
 import com.edobry.moculus.domain.Signup;
 import com.edobry.moculus.service.image.ObjectStorageProvider;
-import com.edobry.moculus.service.image.S3StorageProvider;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +22,6 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -42,51 +38,56 @@ public class SignupSimulator {
     @ConfigurationProperties("signup")
     public static class SignupSimulatorProperties {
         public final String backend;
-
-//        public final Integer port;
     }
 
     @Scheduled(fixedRate = 10000)
     public void submitSignup() throws IOException, InterruptedException {
+        log.info("simulating signup...");
+        Signup signup = generateSignup();
+
+        log.info("sending API request: id {} url {} ...", signup.id, signup.irisUrl);
+        HttpResponse<String> response = sendSignupRequest(signup);
+        log.info("received response: {}", response.body());
+    }
+
+    private Signup generateSignup() throws IOException {
         BufferedImage irisImage = this.makeIrisImage();
         String id = UUID.randomUUID().toString();
-//        Signup signup = makeSignup();
 
-        log.info("Uploading to S3...");
-
+        log.info("uploading iris to S3...");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(irisImage, "png", outputStream);
         outputStream.close();
-
         URL irisUrl = s3Client.add(id, outputStream.toByteArray());
 
         Signup signup = new Signup(irisUrl, id);
+        return signup;
+    }
 
-        log.info("simulating signup: id {} url {}", id, irisUrl);
+    private final String API_ENDPOINT = "signup";
+
+    private HttpResponse<String> sendSignupRequest(Signup signup) throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newHttpClient();
+
+        // default to embedded server
         String backendHost = !StringUtils.isNullOrEmpty(properties.backend) ? properties.backend :
             String.format("localhost:%s", serverPort);
 
         URI backendUrl = null;
         try {
-            backendUrl = new URI(String.format("http://%s/signup", backendHost));
+            backendUrl = new URI(String.format("http://%s/%s", backendHost, API_ENDPOINT));
         } catch (URISyntaxException e) {
             log.error("bad backend URL! {}", backendUrl);
             throw new RuntimeException(e);
         }
+
         HttpRequest request = HttpRequest.newBuilder(backendUrl)
             .header("Content-Type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString(
                 Jackson.toJsonString(signup))).build();
 
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        log.info("Received response: {}", response.body());
+        return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
-
-//    public Signup makeSignup() throws IOException {
-//        //signup has image and id
-//        return new Signup(this.makeIrisImage(), UUID.randomUUID().toString());
-//    }
 
     private final int IMAGE_SIZE = 500;
 
