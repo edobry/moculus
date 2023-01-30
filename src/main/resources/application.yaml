@@ -18,8 +18,8 @@ management:
     enabled-by-default: true
     web:
       exposure:
-        include: '*'
-        exclude: env,beans
+        include: metrics,prometheus
+        exclude:
   statsd:
     metrics:
       export:
