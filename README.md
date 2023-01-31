@@ -67,3 +67,7 @@ For example, the field `mock-backend.path` can be set using the `MOCK_BACKEND_PA
 ## Testing
 
 This repository includes two JUnit test classes containing a rudimentary set of tests, convering the basic logic of the provided requirements.
+
+## Contributing
+
+Hire @edobry :)
