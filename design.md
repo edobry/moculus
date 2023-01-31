@@ -16,7 +16,7 @@ We will be using Gradle for builds, given that its the de facto standard for Jav
 
 ### Status reporting
 
-The "status reporting" requirement is not explicitly phrased as such, but seems to be to be a standard instrumentation requirement; as such, I will approach it as I typically would, by exposing a Prometheus endpoint with the relevant metrics. Given though that this endpoint is a passive method, and the requirement calls for active, I will pair it with a `statsd` deployment, scraping the endpoint and submitting the metrics to whichever monitoring system we're using, which I'm assuming will understand the statsd format, as its relatively standard.
+The "status reporting" requirement is not explicitly phrased as such, but seems to be to be a standard instrumentation requirement; as such, I will approach it as I typically would, by exposing a Prometheus endpoint with the relevant metrics. Given though that this endpoint is a passive method, and the requirement calls for active, I will also support the `statsd` format, as its relatively standard.
 
 ### Image upload
 
@@ -56,3 +56,5 @@ I'm going to assume that we don't care about testing the instrumentation, as tha
 ### Deployment
 
 In order to allow for heterogeneous deployment environments, we will containerize the application with Jib, as its a Gradle-native method of producing a Docker image without requiring a Dockerfile to be written.
+
+In reality, I would also pair this with a Helm chart for deploying to Kubernetes, but this is most likely out of scope.
