@@ -36,6 +36,8 @@ I'm going to assume that we don't care about testing the instrumentation, as tha
 
 #### Test Cases
 
+##### SignupSimulator
+
 - signups contain a URL
 - signup URLs point to a downloadable file
 - signup images are in a PNG format
@@ -43,6 +45,14 @@ I'm going to assume that we don't care about testing the instrumentation, as tha
 - signups contain an ID
 - signup IDs are unique
 
+
+##### StatusReporter
+
+- battery is reported
+- cpu temperature is reported
+- cpu utilization is reported
+- disk utilization is reported
+
 ### Deployment
 
-In order to allow for heterogeneous deployment environments, it would be advantageous to containerize the application; we will use Jib for this, as its a Gradle-native method of producing a Docker image without requiring a Dockerfile to be written.
+In order to allow for heterogeneous deployment environments, we will containerize the application with Jib, as its a Gradle-native method of producing a Docker image without requiring a Dockerfile to be written.

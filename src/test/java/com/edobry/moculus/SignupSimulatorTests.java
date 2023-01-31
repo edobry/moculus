@@ -81,7 +81,6 @@ public class SignupSimulatorTests {
         assertEquals("png", format);
     }
 
-
     @Test
     public void signupImagesAreUnique() throws IOException, URISyntaxException, InterruptedException {
         SignupSimulator signupSimulator = makeSignupSimulator();
